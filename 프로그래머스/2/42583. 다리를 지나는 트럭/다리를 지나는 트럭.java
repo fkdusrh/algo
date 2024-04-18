@@ -1,27 +1,51 @@
-import java.util.*;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
         int answer = 0;
-        Queue<Integer> q = new LinkedList<>();
+        int cbw = 0;
+        int time=0;
+
+        Queue<Integer> bridgh = new LinkedList<>();
+
         for(int i=0;i<bridge_length;i++)
-            q.add(0);
-        int total = 0;
-        int time = 0;
-        int i=0;
-        while(!q.isEmpty()){
-            time++;
-            total-=q.poll();
-            if(i==truck_weights.length)
-                continue;
-            
-            if(total + truck_weights[i] > weight ){
-               q.add(0);
-                continue;
+        bridgh.add(0);
+
+
+        for(int i=0;i<truck_weights.length;i++){
+
+            if(cbw+truck_weights[i] <= weight ){
+                time++;
+                cbw-=bridgh.poll();
+                bridgh.add(truck_weights[i]);
+                cbw+=truck_weights[i];
+
             }
-            total += truck_weights[i];
-            q.add(truck_weights[i]);
-            i++;
+            else{
+                while(cbw+truck_weights[i]>weight){
+                    time++;
+                    cbw-= bridgh.poll();
+                    if(cbw+truck_weights[i]<=weight){
+                        bridgh.add(truck_weights[i]);
+                        cbw+=truck_weights[i];
+                        break;
+
+                    }
+                    else
+                    bridgh.add(0);
+                }
+
+
+
+            }
         }
-        return time;
+        while(!bridgh.isEmpty()){
+            bridgh.poll();
+            time++;
+        }
+        
+        answer=time;
+        return answer;
     }
 }

@@ -10,19 +10,17 @@ class Solution {
             map.put(String.valueOf(c), c - 'A' + 1);
         }
 
-        int i = 0;
-        while (i < msg.length()) {
+       
+        for(int i=0;i<msg.length();){
             String current = null;
-            int j = 1;
-            while (i + j <= msg.length()) {
+            for(int j=1;j<=msg.length()-i;j++){
                 String test = msg.substring(i, i + j);
-                if (map.containsKey(test)) {
-                    current = test;
-                    j++;
-                } else {
+                
+                if (!map.containsKey(test)) {
                     map.put(test, ++mapSize);  
                     break;
-                }
+                } 
+                current=test;
             }
 
             list.add(map.get(current));

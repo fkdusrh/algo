@@ -1,54 +1,59 @@
 import java.util.*;
+import java.lang.*;
 class Solution {
     public int solution(int n, int[][] wires) {
-        int answer = n;        
-        List<int[]> wiresList = new ArrayList<>();
+        Map<Integer, List<Integer>> graph = initGraph(n,wires);
+        int minGap = n;
         
-        for (int[] wire : wires) {
-            wiresList.add(wire); 
+        for(int i=0 ; i< wires.length ;i++){
+            int ignoreNode1 = wires[i][0];
+            int ignoreNode2 = wires[i][1];
+            
+            int areaTopCnt = bfs(graph, ignoreNode1, ignoreNode2, n);
+            
+            int gap = Math.abs(n - 2* areaTopCnt);
+            if(minGap > gap)
+                minGap = gap;
         }
-        
-        for(int i=0;i<wires.length;i++){
-            int[] wire = wiresList.remove(0);
-            int diff = bfs(n, wiresList);
-            if(diff < answer)
-                answer = diff;
-            wiresList.add(wire);
-          
-        }
-        
-        return answer;
+        return minGap;
     }
     
-    public int bfs(int n, List<int[]> wires){
+    
+    public int bfs(Map<Integer, List<Integer>> graph, int ignoreNode1, int ignoreNode2, int n){
         Queue<Integer> q = new LinkedList<>();
-        boolean[] visited = new boolean[n+1];
-        List<Integer> componentCnt = new ArrayList<>();
+        boolean[] visited = new boolean[n];
         
-        for(int i=1;i<=n;i++){
-            if(visited[i])
-                continue;
-            q.add(i);
-            visited[i] = true;
-            int cnt = 0;
-            while(!q.isEmpty()){
-                int node = q.poll();
+        q.add(1);
+        visited[0] = true;
+        int areaTopCnt=1;
 
-                for(int[] edge : wires){
-                    if(edge[0] == node && !visited[edge[1]]){
-                        q.add(edge[1]);
-                        visited[edge[1]]=true;
-                    }
-                    else if(edge[1]==node && !visited[edge[0]]){
-                        q.add(edge[0]);
-                        visited[edge[0]]=true;
-                    }
-                }
-               cnt++;
+        while(!q.isEmpty()){
+            int node = q.poll();
+            for(int nextNode: graph.get(node)){
+                if(visited[nextNode-1])
+                    continue;
+                if(node == ignoreNode1 && nextNode == ignoreNode2)
+                    continue;
+                if(nextNode == ignoreNode1 && node == ignoreNode2)
+                    continue;   
+
+                q.add(nextNode);
+                areaTopCnt++;
+                visited[nextNode-1]=true;
             }
-             componentCnt.add(cnt);
-         }
-        
-        return Math.abs(componentCnt.get(0)-componentCnt.get(1));
+        }
+        return areaTopCnt;
+    }
+    
+    public Map<Integer, List<Integer>> initGraph(int n, int[][] wires){
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for(int i=0;i<wires.length;i++){
+            graph.putIfAbsent(wires[i][0], new LinkedList<>());
+            graph.get(wires[i][0]).add(wires[i][1]);
+            
+            graph.putIfAbsent(wires[i][1], new LinkedList<>());
+            graph.get(wires[i][1]).add(wires[i][0]);
+        }
+        return graph;
     }
 }

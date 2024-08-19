@@ -1,38 +1,19 @@
 import java.util.*;
+
 class Solution {
-    public int solution(int n, int[][] edges) {
+    public int solution(int n, int[][] edge) {
         int answer = 0;
-        boolean[] visited = new boolean[n];
-        List<List<Integer>> adjList = convertToAdjList(n, edges);
-        
-        return bfs(adjList, n);
+        List<List<Integer>> adjList = convertToAdjList(n,edge);
+        int[] distance = findMinDistance(adjList, n);
+        return findMinDistanceCnt(distance, n);
     }
     
-    public static int bfs(List<List<Integer>> adjList, int n){
-        boolean[] visited = new boolean[n];
-        Queue<Integer> q = new LinkedList<>();
-        int[] distances = new int[n];
-        
-        q.add(0);
-        visited[0]=true;
-        distances[0] = 0;
-        
-        while(!q.isEmpty()){
-            int node = q.poll();
-            for(int adjNode: adjList.get(node)){
-                if(visited[adjNode])
-                    continue;
-                q.add(adjNode);
-                visited[adjNode]=true;
-                distances[adjNode] = distances[node]+1; 
-            }
-        }
-        
-        Arrays.sort(distances);
-        int max = distances[n-1];
+    public static int findMinDistanceCnt(int[] distance, int n){
+        Arrays.sort(distance);
+        int max = distance[n-1];
         int cnt = 1;
         for(int i=n-2;i>=0;i--){
-            if(max == distances[i])
+            if(max == distance[i])
                 cnt++;
             else 
                 break;
@@ -40,19 +21,44 @@ class Solution {
         return cnt;
     }
     
-    public static List<List<Integer>> convertToAdjList(int n, int[][] edges){
+    public static int[] findMinDistance(List<List<Integer>> adjList, int n){
+        int distance[] = new int[adjList.size()];
+        boolean[] visited = new boolean[n];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+		PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> (o2[0] - o1[0]));
+
+        pq.add(new int[]{0, 0});
+        visited[0] = true;
+        distance[0] = 0;
+        while(!pq.isEmpty()){
+            int[] cur = pq.poll();
+            int node = cur[0];
+            int dist = cur[1];
+            
+            if (dist > distance[node]) continue;
+            
+            for(int adjNode:adjList.get(node)){
+                if(dist + 1 < distance[adjNode]){
+                    distance[adjNode] = dist + 1;
+                    pq.add(new int[] {adjNode, distance[adjNode]});
+                }
+            }
+        }
+        return distance;
+    }
+    public static List<List<Integer>> convertToAdjList(int n, int[][] adges){
         List<List<Integer>> adjList = new ArrayList<>();
         for(int i=0;i<n;i++){
             adjList.add(new ArrayList<>());
         }
         
-        for(int[] edge:edges){
-            int start = edge[0];
-            int end = edge[1];
+        for(int[] adge:adges){
+            int u = adge[0];
+            int v = adge[1];
             
-            adjList.get(start-1).add(end-1);
-            adjList.get(end-1).add(start-1);
+            adjList.get(u-1).add(v-1);
+            adjList.get(v-1).add(u-1);
         }
-        return adjList;        
+        return adjList;
     }
 }

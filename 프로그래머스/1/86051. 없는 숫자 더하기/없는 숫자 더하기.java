@@ -1,15 +1,15 @@
 class Solution {
     public int solution(int[] numbers) {
-        int total =0;
-        for(int i=1;i<=9;i++)
-            total+=i;
-
-        int existSum = 0;
+        boolean[] exists = new boolean[10];
         for(int i=0;i<numbers.length;i++){
-            existSum += numbers[i];
+               exists[numbers[i]] = true;
         }
-
-
-        return total-existSum;
+        
+        int sum = 0;
+        for(int i =0;i<exists.length;i++){
+            if(!exists[i])
+                sum+=i;
+        }
+        return sum ;
     }
 }

@@ -1,17 +1,15 @@
 class Solution {
     public long solution(int a, int b) {
+        if(a==b)
+            return (long)a;
+        int start = Math.min(a,b);
+        int end = Math.max(a,b);
+        
         long answer = 0;
-
-        int start = b;
-        int end = a;
-        if (a < b) {
-            start = a;
-            end = b;
+        while(end>=start){
+            answer +=start;
+            start ++;
         }
-
-        for (;start<=end;start++){
-            answer+=start;
-        }
-            return answer;
+        return answer;
     }
 }

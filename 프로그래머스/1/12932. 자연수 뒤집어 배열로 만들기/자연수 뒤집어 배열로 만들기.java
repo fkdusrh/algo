@@ -1,18 +1,12 @@
-import java.util.Arrays;
+import java.util.*;
 class Solution {
-   public int[] solution(long n) {
-         int[]  test = new int[11];
-
-        int cnt = 0;
-        for(int i=0;n > 0;i++){
-            test[i] =(int) (n % 10);
-            n/=10;
-            cnt++;
-
+    public int[] solution(long n) {
+        char[] chars = String.valueOf(n).toCharArray();
+        int[] answer = new int[chars.length];
+        
+        for(int i=0;i<chars.length;i++){
+            answer[i] = chars[chars.length-1 -i]-'0';
         }
-        int[] answer = Arrays.copyOf(test, cnt);
-
         return answer;
-  
     }
 }

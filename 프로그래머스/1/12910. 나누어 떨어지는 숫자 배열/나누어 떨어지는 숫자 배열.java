@@ -1,21 +1,23 @@
-import java.util.Arrays;
+import java.util.*;
 class Solution {
     public int[] solution(int[] arr, int divisor) {
-       int[] answer = new int[arr.length];
-       int cnt=-1;
-
-        for(int i=0;i<arr.length;i++){
-            if(arr[i]%divisor==0)
-                answer[++cnt]=arr[i];
+        List<Integer> ls = new ArrayList<>(); 
+        
+        for(int num:arr){
+            if(num % divisor == 0){
+                ls.add(num);
+            }
         }
-        if(cnt==-1){
-            int[] noneArr ={-1};
-               return noneArr;
+        
+        if(ls.size()==0)
+            return new int[]{-1};
+        
+        int[] answer = new int[ls.size()];
+        for (int i = 0; i < ls.size(); i++) {
+            answer[i] = ls.get(i); 
         }
-         
-        int[] fitArr = new int[cnt+1];
-        fitArr = Arrays.copyOf(answer,cnt+1);
-        Arrays.sort(fitArr);
-        return fitArr;
+        Arrays.sort(answer);
+        
+        return answer;
     }
 }

@@ -1,14 +1,10 @@
+import java.util.*;
 class Solution {
-     public  String solution(String s) {
-        String answer = "";
-        StringBuilder sb = new StringBuilder();
-        if(s.length()%2==0){
-
-            sb.append(s.charAt(s.length()/2-1)).append(s.charAt(s.length()/2));
-            return sb.toString();
+    public String solution(String s) {
+        int size = s.length();
+        if(s.length() % 2 ==0 ){        
+            return s.substring(size/2-1,size/2+1);
         }
-
-        sb.append(s.charAt(s.length()/2));
-        return sb.toString();
+        return s.substring(size/2, size/2+1);
     }
 }

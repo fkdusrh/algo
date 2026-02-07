@@ -1,48 +1,22 @@
-import java.util.*;
-
-class Solution {
-    static char[][] map ;
-    static int n;
-    
+class Solution { 
     public String[] solution(int n, int[] arr1, int[] arr2) {
-        
         String[] answer = new String[n];
-        map = new char[n][n];
-
-        StringBuilder sb = new StringBuilder();
-
+        char[][] chars = new char[n][n];
+        
         for(int i=0;i<n;i++){
-
-
-            String s1 = String.format("%" + n + "s", Integer.toBinaryString(arr1[i])).replace(' ', '0');
-    String s2 = String.format("%" + n + "s", Integer.toBinaryString(arr2[i])).replace(' ','0');
-            
-          
-            
-
-            consultBlock(s1,s2,i);
-
-        }
-
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                sb.append(map[i][j]);
+            for(int j=0;j<n;j++){ 
+                int p = arr1[i] % 2;
+                int q = arr2[i] % 2;
+                chars[i][n-j-1] = (p+q>0)?'#':' ';
+                
+                arr1[i] /= 2;                
+                arr2[i] /= 2;
             }
-           answer[i]=sb.toString();
-            sb.setLength(0);
+        }
+        
+        for(int i=0;i<n;i++){
+            answer[i] = new String(chars[i]);
         }
         return answer;
     }
-    
-     private void consultBlock(String s1, String s2,int row) {
-        for(int i=0;i<s1.length();i++){
-            if(s1.charAt(i)=='1' || s2.charAt(i)=='1'){
-                map[row][i]='#';
-                continue;
-            }
-            map[row][i]=' ';
-        }
-       
-    }
 }
-

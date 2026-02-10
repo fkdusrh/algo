@@ -1,18 +1,23 @@
+import java.util.*;
 class Solution {
     public int[] solution(String s) {
         int[] answer = new int[s.length()];
+        Map<Character, Integer> hm = new HashMap<>();
         
-        answer[0]=-1;
-        
-  
         for(int i=0;i<s.length();i++){
-            for(int j=i-1;j>=0;j--){
-                if(s.charAt(i) == s.charAt(j)){
-                   answer[i]=i-j; 
-                    break;
-                }
-                answer[i]=-1;
+            char c = s.charAt(i);
+            System.out.print(c+"] ");
+            
+            int idx = hm.getOrDefault(c, -1);
+            if(idx == -1){ 
+                answer[i] = -1;
+                hm.put(c, i);
             }
+            else{ 
+                hm.put(c, i); 
+                answer[i] = i - idx; 
+            }
+            System.out.println();
         }
         return answer;
     }

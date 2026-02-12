@@ -1,16 +1,17 @@
+import java.util.*;
 class Solution {
     public String solution(int[] food) {
-        String answer = "";
-        StringBuilder sb = new StringBuilder();
-        for(int i=1;i<food.length;i++){
-            for(int j=0;j<food[i]/2;j++)
-                 sb.append(i);
-        }
-        String originSb = sb.toString();
-        String reverseSb = sb.reverse().toString();
+        StringBuilder left = new StringBuilder();
         
-        StringBuilder resultSb = new StringBuilder();
-        resultSb.append(originSb).append("0").append(reverseSb);
-        return resultSb.toString();
+        for(int i=1;i<food.length;i++){
+            int f=food[i];
+            
+            for(int j=0;j<f/2;j++)
+                left.append(i);
+        }
+        
+        StringBuilder right = new StringBuilder(left).reverse();
+        
+        return left.append('0').append(right).toString();
     }
 }

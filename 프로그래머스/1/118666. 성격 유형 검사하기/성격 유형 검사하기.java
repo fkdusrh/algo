@@ -1,26 +1,26 @@
 import java.util.*;
 class Solution {
-     public String solution(String[] survey, int[] choices) {
-        HashMap<Character, Integer> map = new HashMap<>();
+    public String solution(String[] survey, int[] choices) {
+        Map<Character, Integer> map = new HashMap<>();
+        int[] scores = {3,2,1,0,1,2,3};
         
-        for (int i = 0; i < choices.length; i++) {
-            char first = survey[i].charAt(0);   // 첫 번째 문자 (선택지 1~3에 해당)
-            char second = survey[i].charAt(1);  // 두 번째 문자 (선택지 5~7에 해당)
+        for(int i=0;i<survey.length;i++){
+            String s = survey[i];
+            int c = choices[i];
             
-            if (choices[i] > 4) {
-                map.put(second, map.getOrDefault(second, 0) + (choices[i] - 4));
-            } else if (choices[i] < 4) {
-                map.put(first, map.getOrDefault(first, 0) + (4 - choices[i]));
-            }
-            // choices[i] == 4인 경우 어떤 점수도 추가하지 않음
+            if(c<4)
+                map.put(s.charAt(0), map.getOrDefault(s.charAt(0),0) + scores[c-1]);
+            else if(c>4)
+                map.put(s.charAt(1), map.getOrDefault(s.charAt(1),0) + scores[c-1]);
         }
         
         StringBuilder sb = new StringBuilder();
-        sb.append(map.getOrDefault('R', 0) >= map.getOrDefault('T', 0) ? 'R' : 'T');
-        sb.append(map.getOrDefault('C', 0) >= map.getOrDefault('F', 0) ? 'C' : 'F');
-        sb.append(map.getOrDefault('J', 0) >= map.getOrDefault('M', 0) ? 'J' : 'M');
-        sb.append(map.getOrDefault('A', 0) >= map.getOrDefault('N', 0) ? 'A' : 'N');
+        char[][] TYPE = {{'R','T'}, {'C','F'}, {'J','M'},{'A','N'}};
         
+        for(char[] t: TYPE){
+            char c = map.getOrDefault(t[0],0) >= map.getOrDefault(t[1],0)? t[0] : t[1];
+            sb.append(c);
+        }
         return sb.toString();
     }
 }

@@ -1,30 +1,24 @@
 class Solution {
-    final static int three = 3;
-    static int cnt=0;
-    static int answer=0;
-    
     public int solution(int[] nums) {
-      
-        combination(nums,0,0,0);
-            
-        return answer;
+        return combination(nums,0,0,0,0);
     }
     
-    public static void combination(int[] nums, int start,int cnt,int sum){
-        if(cnt==three){
-            for(int i=2;i<sum;i++){
-                if(sum%i==0)
-                    return;
+    public int  combination(int[] nums, int start, int sum, int pickCnt, int primeCnt){
+        if(pickCnt == 3){
+            int cnt=0;
+            
+            for(int i=1;i<= sum;i++){
+                if(sum % i ==0)
+                    cnt++;
             }
-            answer++;
-            return;
+            
+            return cnt > 2 ? primeCnt: ++primeCnt;
         }
         
-        if(nums.length <= start)
-            return;
+        for(int i=start;i<nums.length;i++){
+            primeCnt = combination(nums, i+1, sum+nums[i], pickCnt+1, primeCnt);
+        }
         
-        combination(nums,start+1,cnt+1,sum+nums[start]);
-        combination(nums,start+1,cnt,sum);
-        
+        return primeCnt;
     }
 }

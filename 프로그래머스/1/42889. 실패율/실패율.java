@@ -1,48 +1,33 @@
 import java.util.*;
+
 class Solution {
     public int[] solution(int N, int[] stages) {
-        int[] answer = {};
+        double[][] failRate = new double[N][2]; 
+        for (int i = 1; i <= N; i++) failRate[i - 1][0] = i;
 
-        int[] currentStages = new int[N + 2];
-        int[] biggerCnt = new int[N + 2];
-
+        int[] stayMembers = new int[N + 2];
         Arrays.sort(stages);
 
-        for (int j = 1; j < N + 1; j++)
-            for (int i = 0; i < stages.length; i++) {
-
-                if(j==stages[i])
-                    currentStages[j]++;
-
-                if (j <= stages[i])
-                    biggerCnt[j]++;
-
-            }
-
-        double[] fail = new double[N + 2];
-
-        for (int i = 1; i < N+1; i++) {
-             if(biggerCnt[i]==0){
-                fail[i-1]=0;
-                continue;
-            }
-            fail[i-1] = (double) currentStages[i] / biggerCnt[i];
+        for (int stage : stages) {
+            if (stage == N + 1) break;
+            stayMembers[stage]++;
         }
 
+        int clearMember = stages.length;
 
-        int[] failStages = new int[N];
-
-        for (int i = 0; i < N; i++) {
-            int maxIdx = 0;
-            for (int j = 0; j < N; j++) {
-                if (fail[maxIdx] < fail[j])
-                    maxIdx = j;
-
-
-            }
-            failStages[i] = maxIdx+1;
-            fail[maxIdx]=-1;
+        for (int i = 1; i <= N; i++) {
+            failRate[i - 1][1] = (clearMember == 0) ? 0.0 : (double) stayMembers[i] / clearMember;
+            clearMember -= stayMembers[i];
         }
-        return failStages;
+
+        Arrays.sort(failRate, (a, b) -> {
+            int cmp = Double.compare(b[1], a[1]);
+            if (cmp != 0) return cmp;
+            return Double.compare(a[0], b[0]);
+        });
+
+        int[] answer = new int[N];
+        for (int i = 0; i < N; i++) answer[i] = (int) failRate[i][0]; 
+        return answer;
     }
 }

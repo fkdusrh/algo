@@ -10,17 +10,15 @@ class Solution {
             if(pq.size() < k){
                 pq.offer(s);
             }else {
-                int lowest = pq.poll();
+                int lowest = pq.peek();
                 
                 if (lowest < s) {
+                    pq.poll();
                     pq.offer(s);
-                } else {
-                    pq.offer(lowest);
-                }   
+                }  
             }
             
-            answer[i] = pq.poll();
-            pq.offer(answer[i]);
+            answer[i] = pq.peek();
         }
         return answer;
     }

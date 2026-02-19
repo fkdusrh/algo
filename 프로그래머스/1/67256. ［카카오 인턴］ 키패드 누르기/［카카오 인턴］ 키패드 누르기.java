@@ -4,7 +4,6 @@ class Solution {
         int leftPosition = 10;
         int zeroPosition = 11;
         int rightPosition = 12;
-        boolean right = hand.equals("right") ? true:false;
         
         for(int number : numbers){
             if(number % 3 == 1){

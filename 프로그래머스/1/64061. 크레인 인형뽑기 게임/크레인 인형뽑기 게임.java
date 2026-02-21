@@ -1,32 +1,49 @@
 import java.util.*;
-
 class Solution {
     public int solution(int[][] board, int[] moves) {
         int answer = 0;
-        List<Stack<Integer>> list = new LinkedList<>();
-        for(int j = 0; j < board.length; j++) {
+        int boardSize = board.length;
+        List<Stack<Integer>> ls = new ArrayList<>();
+        
+        for(int i=0;i<board[0].length ; i++){//열
             Stack<Integer> s = new Stack<>();
-            for(int i = board.length - 1; i >= 0; i--) {
-                int num = board[i][j];
-                if(num == 0)
-                    break;
-                s.push(num);
+            
+            for(int j=board.length-1;j>= 0;j--){//행
+                if(board[j][i] !=0)
+                    s.add(board[j][i]);
             }
-            list.add(s);
+            
+            ls.add(s);
         }
+        
         Stack<Integer> box = new Stack<>();
-        for(int move : moves) {
-            Stack<Integer> stack = list.get(move - 1);
-            if (!stack.isEmpty()) {
-                int num = stack.pop();
-                if(!box.isEmpty() && box.peek() == num) {
+          
+        for(int move:moves){
+            if(ls.get(move-1).size()==0)
+                continue;
+            
+            int grab = ls.get(move-1).pop();
+            if(box.size()==0){
+                box.push(grab);
+            } else {
+                if( box.peek() == grab){
+                    answer ++;
                     box.pop();
-                    answer += 2;
-                } else {
-                    box.push(num);
+                }else{
+                    box.push(grab);
                 }
             }
         }
-        return answer;
+        
+        return answer*2 ;
     }
+    
+    public void print(Stack s){
+        System.out.print("바구니[");
+        for(int i=0;i<s.size();i++){
+            System.out.print(s.get(i)+" / ");
+        }
+        System.out.println("]");
+    }
+  
 }

@@ -19,7 +19,7 @@ class Solution {
                 }               
             }
             
-            sb.append((char)((int)'a'+idx));
+            sb.append((char)('a'+idx));
         }
         
         return sb.toString();

@@ -2,16 +2,19 @@ import java.util.*;
 class Solution {
     public String solution(String s, String skip, int index) {
         StringBuilder sb = new StringBuilder();
+        boolean[] blocked = new boolean['z'-'a'+1];
         
-        for(int i=0;i<s.length();i++){
-            char c = s.charAt(i);
+        for(char c: skip.toCharArray())
+            blocked[(int)c - 'a'] = true; 
+        
+        for(char c: s.toCharArray()){
             int idx = c-'a'; 
             int cnt=0;
             
             while(cnt < index){
-                ++idx;
-                idx %= (int)('z'-'a'+1);
-                if(!skip.contains(Character.toString('a'+idx))){
+                idx = (idx + 1) % 26;
+                
+                if(!blocked[idx]){
                     ++cnt;
                 }               
             }

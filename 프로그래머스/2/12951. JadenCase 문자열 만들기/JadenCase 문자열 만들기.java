@@ -1,35 +1,25 @@
+import java.util.*;
 class Solution {
     public String solution(String s) {
         StringBuilder sb = new StringBuilder();
-        System.out.println((int)'2');
-        String answer = "";
-        boolean big = true;
-        int gap = (int)'a'-(int)'A';
-        for(int i=0;i<s.length();i++){
-            char c = s.charAt(i);
-            if(c == ' '){
-                sb.append(" ");
-                big=true;
-                continue;
-            }
-            if(c<'A'){
-                sb.append(c);
-                big=false;
-                continue;
-            }
-            c-='A';
-            if(c>=gap){
-                c-=gap;
-            }
+        boolean start = true;
+        s = s.toLowerCase();
         
-            if(big){
-                sb.append((char)(c+'A'));
-                big=false;
+        for(char c:s.toCharArray()){
+            if(c == ' '){
+                sb.append(c);
+                start = true;
                 continue;
             }
-            sb.append((char)(c+'a'));
             
+            if(start && c >= 'a' && c<= 'z'){
+                sb.append((char)(c-32));
+            }else
+                sb.append(c);
+            
+            start = false;
         }
+            
         return sb.toString();
     }
 }

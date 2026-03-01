@@ -1,34 +1,51 @@
 import java.util.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 class Solution {
     public int[] solution(String today, String[] terms, String[] privacies) {
-        List<Integer> trash = new ArrayList<>();
-        HashMap<String, Integer> map = new HashMap<>();
-        String[][] day = new String[privacies.length][];
+        int[] answer = new int[privacies.length];
+        int tYear = Integer.parseInt(today.substring(0,4)) ;
+        int tMonth = Integer.parseInt(today.substring(5,7));
+        int tDay = Integer.parseInt(today.substring(8,10));        
+        Map<Character, Integer> hm = new HashMap<>();
+        
+        for(String term:terms)
+            hm.put(term.charAt(0), Integer.parseInt(term.substring(2, term.length())));
+        
+        int idx= 0;
+        
+        for(int i=0;i<privacies.length;i++){
+            String privacie = privacies[i];           
+   
+            int pYear = Integer.parseInt(privacie.substring(0,4));
+            int pMonth = Integer.parseInt(privacie.substring(5,7));
+            int pDay = Integer.parseInt(privacie.substring(8,10));
+            
+            int term = hm.get(privacie.charAt(privacie.length()-1));
+            
+            if(pDay > 1)
+                pDay -= 1;
+             else{
+                pDay = 28 ;
+                pMonth -= 1;   
+                 if(pMonth == 1){
+                     pMonth = 12;
+                     pYear -= 1;
+                 }
+             }   
 
-        for (int i = 0; i < privacies.length; i++) {
-            day[i] = privacies[i].split(" ");
+            int month0 = (pMonth - 1) + term;
+            pYear += month0 / 12;
+            pMonth = (month0 % 12) + 1;
+            
+            if(pYear <tYear)
+                answer[idx++] = i+1;
+            else if(pYear == tYear && pMonth < tMonth)
+                answer[idx++] = i+1;
+            else if(pYear == tYear && pMonth == tMonth && pDay < tDay)
+                answer[idx++] = i+1;
         }
-
-        for (int i = 0; i < terms.length; i++) {
-            String[] term = terms[i].split(" ");
-            map.put(term[0], Integer.parseInt(term[1]));
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        LocalDate current = LocalDate.parse(today, formatter);
-
-        for (int i = 0; i < privacies.length; i++) {
-            LocalDate date = LocalDate.parse(day[i][0], formatter);
-            int period = map.get(day[i][1]);
-            LocalDate expiration = date.plusMonths(period);
-
-            if (!expiration.isAfter(current)) {
-                trash.add(i + 1); 
-            }
-        }
-
-        return trash.stream().mapToInt(Integer::intValue).toArray();
+        
+        return Arrays.copyOf(answer,idx);
     }
+    
+    
 }

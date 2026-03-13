@@ -1,26 +1,20 @@
-import java.util.*;
 class Solution {
     public int solution(int n) {
-         int cnt = 0;
-        int sum = 1;
-        int inputNum=1;
+        int answer = 0;
         
-        Queue<Integer> q = new LinkedList<>();
-        q.add(inputNum++);
-
-        while(!q.isEmpty()){
-
-            if(sum>=n){
-                if(sum==n){
-                    cnt++;
-                }
-                int smallNum=q.poll();
-                sum-=smallNum;
-                continue;
-            }
-            sum+=inputNum;
-            q.add(inputNum++);
+        for(int i=1;i<=n;i++){
+            int sum = 0;
+            
+            for(int j= i;j<=n;j++){
+                sum += j;
+                
+                if(sum >= n)
+                    break;
+            }    
+            
+            if(sum == n)
+                ++answer;
         }
-        return cnt;
+        return answer;
     }
 }

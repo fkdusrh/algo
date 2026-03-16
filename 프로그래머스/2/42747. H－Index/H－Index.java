@@ -1,20 +1,24 @@
 import java.util.*;
-
 class Solution {
     public int solution(int[] citations) {
-        int hIndex = 0;
-
+        int answer = 0;
         Arrays.sort(citations);
-		
-        for(int i = 0; i < citations.length; i++) {
-            int h = citations.length - i; 
+        StringBuilder sb = new StringBuilder();
+        
+        for(int h=citations[citations.length-1];h>=0;h--){
+            int cnt = 0;
+
+            for(int citation : citations){
+                if(citation >= h)
+                    cnt++;
+            }
             
-            if(citations[i] >= h) {
-                hIndex = h;
+            if(cnt >= h && citations.length-cnt <= h){
+                answer = h;
                 break;
             }
         }
-
-        return hIndex;
+        
+        return answer;
     }
 }

@@ -1,22 +1,23 @@
+import java.util.*;
 class Solution {
-    static boolean[] explored;
-    static int maxDepth = 0;
-
     public int solution(int k, int[][] dungeons) {
-        explored = new boolean[dungeons.length];
-        searchDungeons(0, k, dungeons);
-        return maxDepth;
+        return permutation(dungeons, k, new boolean[dungeons.length]);
     }
-
-    private void searchDungeons(int depth, int currentFatigue, int[][] dungeons) {
-        for (int i = 0; i < dungeons.length; i++) {
-            if (explored[i] || dungeons[i][0] > currentFatigue) {
+    
+    public int permutation(int[][] dungeons,int hp, boolean[] visited){     
+        int max = 0;
+        
+        for(int i= 0;i< dungeons.length; i++){
+            if(visited[i])
                 continue;
-            }
-            explored[i] = true;
-            searchDungeons(depth + 1, currentFatigue - dungeons[i][1], dungeons);
-            explored[i] = false;
+            if(hp < dungeons[i][0])
+                continue;
+            
+            visited[i] = true;
+            max = Math.max(max, permutation(dungeons, hp - dungeons[i][1], visited)+1);
+            visited[i] = false;
         }
-        maxDepth = Math.max(maxDepth, depth);
+        
+        return max;
     }
 }

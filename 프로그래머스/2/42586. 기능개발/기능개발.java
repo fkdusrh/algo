@@ -1,25 +1,31 @@
 import java.util.*;
-
 class Solution {
-    public ArrayList solution(int[] progresses, int[] speeds) {
-        ArrayList<Integer> result = new ArrayList<>();
-        Queue<Integer> workDaysQueue = new LinkedList<>();
+    public int[] solution(int[] progresses, int[] speeds) {
+        Queue<Integer> q = new LinkedList<>();
         
-        for(int i = 0; i < progresses.length; i++) {
-            workDaysQueue.add((int)Math.ceil((100.0 - progresses[i]) / speeds[i]));
-        }
-        
-        while(!workDaysQueue.isEmpty()) {
-            int currentWorkDays = workDaysQueue.poll();
-            int deployCount = 1;
+        for(int i=0;i<progresses.length;i++){
+            int remain = 100 - progresses[i];
+            int needDay = (remain + speeds[i] - 1) / speeds[i];
             
-            while(!workDaysQueue.isEmpty() && workDaysQueue.peek() <= currentWorkDays) {
-                workDaysQueue.poll();
-                deployCount++;
-            }
-            result.add(deployCount);
+            q.offer(needDay);
         }
-
-        return result;
+        
+        List<Integer> ls = new ArrayList<>();
+        
+        while(!q.isEmpty()){
+            int cnt = 1;
+            int maximum = q.poll();
+            
+            while(!q.isEmpty() && q.peek() <= maximum){
+                q.poll();
+                cnt++;
+            }
+            
+            ls.add(cnt);
+        }
+        
+        return ls.stream()
+            .mapToInt(Integer::intValue)
+            .toArray();
     }
 }

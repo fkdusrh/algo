@@ -1,70 +1,34 @@
 import java.util.*;
 class Solution {
     public int solution(int cacheSize, String[] cities) {
-         int answer = 0;
-        int time = 0;
-
-        if (cacheSize == 0)
-            return cities.length * 5;
-
-        Frame[] cache = new Frame[cacheSize];
-
-
-        for (int i = 0; i < cities.length; i++, time++) {
-
-            Frame f = new Frame(time, cities[i]);
-            boolean hit = false;
-            int minIdx=0;
-            for (int j = 0; j < cache.length; j++) {
-
-                if(cache[j]==null){
-                    minIdx=j;
+        if(cacheSize == 0)
+            return 5 * cities.length;
+        
+        int answer = 0;
+        List<String> ls = new ArrayList<>();
+        
+        for(String city:cities){
+            city = city.toLowerCase();
+            int index = -1;
+            
+            for(int i=0;i<ls.size();i++){
+                if(city.equals(ls.get(i))){
+                    index = i;
                     break;
                 }
-                if (equal(cache[j].city, f.city)) {
-                    hit = true;
-                    cache[j].time = time;
-                    answer += 1;
-                }
-
-                if(cache[minIdx].time>cache[j].time){
-                    minIdx=j;
-                }
             }
-            if (hit)
-                continue;
-
-            cache[minIdx]=f;
-            answer+=5;
-
+            
+            if(index  == -1){//캐시에 없음
+                if(ls.size() == cacheSize) //캐시가 꽉 찼을 때
+                    ls.remove(0);// 가장 오래 안쓰인 프레임 지운다.
+                answer += 5; 
+            }else{//캐시에 있음
+                ls.remove(index);
+                answer++;
+            }
+            
+            ls.add(city);
         }
         return answer;
-    }
-    
-     public boolean equal(String s1, String s2){
-         if(s1.length()!=s2.length())
-            return false;
-        int min = Math.min(s1.length(),s2.length());
-        for(int i=0;i<min;i++){
-           int gap = Math.abs((int)s1.charAt(i)-(int)s2.charAt(i));
-            if(gap!='a'-'A' && gap !=0){
-                return false;
-            }
-        }
-
-        return true;
-    }
-    
-    
-    
-}
-
-class Frame {
-    int time;
-    String city;
-
-    public Frame(int time, String city) {
-        this.time = time;
-        this.city = city;
     }
 }

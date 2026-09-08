@@ -1,17 +1,17 @@
 import java.util.*;
 
 public class Solution {
+    
     public int[] solution(int []arr) {
-        int answer[] = new int[arr.length];
-        int size = 0;
+        ArrayList<Integer> ls = new ArrayList<>();
+        ls.add(arr[0]);
         
-        
-        answer[size++] = arr[0];
-        for(int i=1;i<arr.length;i++){
-            if(arr[i] != arr[i-1]){
-                answer[size++] = arr[i];
+        for(int n : arr){
+            if(ls.get(ls.size()-1) != n){
+                ls.add(n);
             }
         }
-        return Arrays.copyOf(answer, size);
+
+        return ls.stream().mapToInt(i->i).toArray();
     }
 }

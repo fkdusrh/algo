@@ -1,64 +1,61 @@
 import java.util.*;
 class Solution {
     public int[] solution(String[] park, String[] routes) {
-        int r=0,c=0;
-        int width = park[0].length();
-        int height = park.length;
+        int[] curPosition = new int[2];
         
-        Map<Character, int[]> hm = new HashMap<>();
-        hm.put('N',new int[]{-1,0});
-        hm.put('S',new int[]{1,0});
-        hm.put('W',new int[]{0,-1});
-        hm.put('E',new int[]{0,1});
+        HashMap<String, int[]> dir = new HashMap<>();
+        dir.put("W",new int[]{0,-1});
+        dir.put("E",new int[]{0,1});
+        dir.put("N",new int[]{-1,0});
+        dir.put("S",new int[]{1,0});
         
         char[][] map = new char[park.length][park[0].length()];
         
-        for(int i=0;i<height;i++){
-            String p = park[i];
-            
-            for(int j=0;j<width;j++){
-                char letter = p.charAt(j);
-                map[i][j] = letter;
+        for(int i=0;i<park.length;i++){
+            for(int j=0;j<park[0].length();j++){
+                map[i][j] = park[i].charAt(j);
                 
-                if(letter == 'S'){
-                    r = i;
-                    c = j;
+                if(map[i][j] == 'S'){
+                    curPosition[0] = i;
+                    curPosition[1] = j;
                 }
             }
         }
         
-        for(int i=0;i<routes.length;i++){
-            char op = routes[i].charAt(0);
-            int dis = routes[i].charAt(2) - '0';
+        System.out.println(curPosition[0]+"/"+curPosition[1]);
+        
+        for(String route:routes){
+            String[] info = route.split(" ");
+            int[] direction = dir.get(info[0]);
+            int distance = Integer.parseInt(info[1]);
+            boolean moveable = true;
             
-            int dr = hm.get(op)[0];
-            int dc = hm.get(op)[1];
-            boolean canMove = true;
-            
-            int nr = r;
-            int nc = c;
-            
-            for(int j=0;j<dis;j++){
-                nr += dr;
-                nc += dc;
-                
-                if(nr < 0 || nc < 0 || nr >= height || nc >= width){
-                    canMove = false;
-                    break;
-                }
-                
-                if(map[nr][nc] == 'X'){
-                    canMove = false;
+            for(int i=0;i<distance;i++){
+                int row = curPosition[0] + direction[0]*(i+1);
+                int col = curPosition[1] + direction[1] *(i+1);
+                if(!isAvailable(row, col, park.length,park[0].length()) || map[row][col] == 'X'){
+                    moveable = false;
                     break;
                 }
             }
             
-            if(canMove){
-                r += dr * dis;
-                c += dc * dis;
+            System.out.println(moveable);
+            
+            
+            if(moveable){
+                System.out.println(route);
+                System.out.println (distance * direction[0]+"/"+distance * direction[1]);
+                curPosition[0] += distance * direction[0];
+                curPosition[1] += distance * direction[1];
             }
         }
         
-        return new int[]{r, c};
+        return curPosition;
+    }
+    
+    private boolean isAvailable(int row, int col, int height, int width){
+        if(row<0 || col<0 || row >= height || col >= width)
+            return false;
+        return true;
     }
 }

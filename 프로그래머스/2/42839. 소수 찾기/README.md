@@ -1,10 +1,10 @@
 # [level 2] 소수 찾기 - 42839 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42839) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42839?utm_source=chatgpt.com) 
 
 ### 성능 요약
 
-메모리: 75.4 MB, 시간: 12.64 ms
+메모리: 74.7 MB, 시간: 0.99 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 14일 08:37:21
+2026년 09월 10일 20:09:03
 
 ### 문제 설명
 

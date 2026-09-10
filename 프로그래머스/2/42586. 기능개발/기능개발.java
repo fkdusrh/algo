@@ -1,31 +1,34 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        Queue<Integer> q = new LinkedList<>();
+        int[] answer = new int[progresses.length];
+        Deque<Integer> q = new ArrayDeque<>();
         
-        for(int i=0;i<progresses.length;i++){
-            int remain = 100 - progresses[i];
-            int needDay = (remain + speeds[i] - 1) / speeds[i];
-            
-            q.offer(needDay);
+        for(int progress:progresses){
+            q.offer(progress);
         }
         
-        List<Integer> ls = new ArrayList<>();
+        int jobIdx = 0, turn = 0,time = 0;
         
         while(!q.isEmpty()){
-            int cnt = 1;
-            int maximum = q.poll();
-            
-            while(!q.isEmpty() && q.peek() <= maximum){
-                q.poll();
-                cnt++;
+            int cnt = 0;
+            time++;
+
+            while(jobIdx < progresses.length){
+                if(q.peek() + time * speeds[jobIdx] >=100){
+                    q.poll();
+                    cnt++;
+                    jobIdx++;
+                }else{
+                    break;
+                }
             }
             
-            ls.add(cnt);
+            if(cnt>0){
+                  answer[turn++] = cnt;
+            }
         }
         
-        return ls.stream()
-            .mapToInt(Integer::intValue)
-            .toArray();
+        return Arrays.copyOf(answer,turn);
     }
 }

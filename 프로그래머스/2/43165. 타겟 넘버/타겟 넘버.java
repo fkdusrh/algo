@@ -1,26 +1,25 @@
-import java.util.*;
-
 class Solution {
-
+    int[] numbers;
+    int target;
+    boolean[] visit;
+    int cnt = 0;
     public int solution(int[] numbers, int target) {
-        int count = 0;
-        Queue<Integer> sumsQueue = new LinkedList<>();
-        sumsQueue.add(0);
-
-        for (int num : numbers) {
-            int currentLevelSize = sumsQueue.size();
-            for (int i = 0; i < currentLevelSize; i++) {
-                int currentSum = sumsQueue.poll();
-                sumsQueue.add(currentSum + num);
-                sumsQueue.add(currentSum - num);
+        this.numbers = numbers;
+        this.target = target;
+        visit = new boolean[numbers.length];
+        
+        dfs(0, 0);
+        return cnt;
+    }
+    void dfs(int depth, int sum){
+        if(depth == numbers.length){
+            if(sum == target){
+                cnt++;
             }
+            return;
         }
-
-        for (int possibleSum : sumsQueue) {
-            if (possibleSum == target) {
-                count++;
-            }
-        }
-        return count;
+        
+        dfs(depth+1, sum + numbers[depth]);
+        dfs(depth+1, sum - numbers[depth]);
     }
 }

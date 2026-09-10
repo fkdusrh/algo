@@ -1,28 +1,37 @@
 import java.util.*;
-
 class Solution {
     public int solution(int[] priorities, int location) {
-        int printOrder = 0;
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-
-        // 우선순위 큐에 모든 우선순위 추가
-        for (int priority : priorities) {
-            maxHeap.add(priority);
-        }
-
-        // 우선순위 큐가 비워질 때까지 반복
-        while (!maxHeap.isEmpty()) {
-            for (int index = 0; index < priorities.length; index++) {
-                if (priorities[index] == maxHeap.peek()) {
-                    maxHeap.poll();
-                    printOrder++;
-                    if (index == location) {
-                        return printOrder;
-                    }
-                }
-            }
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        Deque<int[]> q = new ArrayDeque<>();
+        
+        for(int i=0;i<priorities.length;i++){
+            int priority = priorities[i];
+            pq.offer(priority);
+            
+            int[] arr = new int[2];
+            arr[0] = priority;
+            arr[1] = i;
+            q.offer(arr);
         }
         
-        return printOrder;
+        int cnt =0;
+        
+        while(!q.isEmpty()){
+            int[] num = q.poll();
+            
+            if(pq.peek() == num[0]){
+                ++cnt;
+                pq.poll();
+                if(num[1] == location){
+                    return cnt;
+                }
+            }else{
+                q.offer(num);
+            }
+            
+            
+        }
+        
+        return cnt;
     }
 }

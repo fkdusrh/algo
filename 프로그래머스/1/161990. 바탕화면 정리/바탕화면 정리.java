@@ -1,42 +1,19 @@
+import java.util.*;
 class Solution {
     public int[] solution(String[] wallpaper) {
-        int rowSize = wallpaper.length;
-        int colSize = wallpaper[0].length();
-        Point start = new Point(colSize,rowSize);
-        Point end = new Point(0,0);
-        
-        for(int i=0;i<rowSize;i++){
-            String s = wallpaper[i];
-            
-            for(int j=0;j<colSize;j++){
-                char c = s.charAt(j);
-                
-                if(c=='#'){
-                    if(start.x > j){
-                        start.x = j;
-                    }
-                    if(start.y > i){
-                        start.y = i;
-                    }
-                    if(end.x < j){
-                        end.x = j;
-                    }
-                    if(end.y < i){
-                        end.y = i;
-                    }
+        int[] arr = {wallpaper.length, wallpaper[0].length(), 0,0};
+
+        for(int i=0;i<wallpaper.length;i++){
+            for(int j=0;j<wallpaper[0].length();j++){
+                if(wallpaper[i].charAt(j) == '#'){
+                    arr[0] = Math.min(arr[0], i);
+                    arr[1] = Math.min(arr[1], j);
+                    arr[2] = Math.max(arr[2], i+1);
+                    arr[3] = Math.max(arr[3], j+1);
                 }
             }
         }
-        return new int[] {start.y, start.x ,end.y +1, end.x+1};
-    }
-    
-    class Point{
-        int x;
-        int y;
         
-        public Point(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
+        return arr;
     }
 }

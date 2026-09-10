@@ -1,10 +1,10 @@
 # [level 2] 올바른 괄호 - 12909 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12909) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12909?utm_source=chatgpt.com) 
 
 ### 성능 요약
 
-메모리: 54.4 MB, 시간: 19.07 ms
+메모리: 57.8 MB, 시간: 12.29 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 02월 27일 19:10:42
+2026년 09월 10일 16:31:09
 
 ### 문제 설명
 

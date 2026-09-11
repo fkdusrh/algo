@@ -1,47 +1,32 @@
 import java.util.*;
+
 class Solution {
     public int solution(int n, int[][] computers) {
         int answer = 0;
-        
-        int[][] visited = new int[computers.length][computers.length];
-        
-        Stack<Integer> s = new Stack<>();
-        
-        for(int i=0;i<computers.length;i++){
-            for(int j=0;j<computers.length;j++){
-                
-                if(computers[i][j]==0) 
-                    continue;
-                
-                if(i==j) { 
-                    answer++;
-                    computers[i][j]=0;
-                    continue;
-                }
-                
-                if(computers[i][j]==1){ 
-                    s.push(j);
-                    computers[j][i]=0; 
-                }
+        boolean[] visit = new boolean[n];
 
-                
-                while(!s.isEmpty()){ 
-                    int row = s.pop(); 
-                                        
-                    for(int k=0;k<computers.length;k++){
-                        if(row==k) { 
-                            computers[row][row]=0;
-                            continue;
-                        }
-                        if(computers[row][k]==1){ 
-                            s.push(k); 
-                            computers[row][k]=0; 
-                        }
-                           
+        for (int i = 0; i < n; i++) {
+            if (visit[i])
+                continue;
+
+            answer++;
+
+            Deque<Integer> q = new ArrayDeque<>();
+            q.offer(i);
+            visit[i] = true;
+
+            while (!q.isEmpty()) {
+                int node = q.poll();
+
+                for (int next = 0; next < n; next++) {
+                    if (!visit[next] && computers[node][next] == 1) {
+                        visit[next] = true;
+                        q.offer(next);
                     }
                 }
             }
         }
+
         return answer;
     }
 }

@@ -1,63 +1,33 @@
 import java.util.*;
 class Solution {
+    String targetWord;
+    char[] aeiou = {'A','E','I','O','U'};
+    boolean find = false;
+    int cnt =0;
     
-    public static HashMap<Character,Character> map ;
-    public int index;
     public int solution(String word) {
-        int answer = 0;
-        int index = 0;
-        map = new HashMap<>();
-        map.put('A','E');
-        map.put('E','I');
-        map.put('I','O');
-        map.put('O','U');
-        StringBuilder sb = new StringBuilder();
-        //A~AAAAA 까지는 수작업
-        if(word.equals("A"))
-            return 1;
-        if(word.equals("AA"))
-            return 2;
-        if(word.equals("AAA"))
-            return 3;
-        if(word.equals("AAAA"))
-            return 4;
-        
-        while(!sb.toString().equals(word)){    
-            
-            if(sb.length()<5){
-                sb.append("A");
-                index++;
-                continue;
-            }
-            
-            int lastIndex = sb.length() - 1;
-            char lastChar = sb.charAt(lastIndex);
-            if(lastChar!='U')
-                sb.setCharAt(lastIndex, map.get(lastChar));
-            else
-                sb = upper(sb);
-            index++;    
-            
-            if(sb==null){
-                break;
-            }
-        }   
-        return index;
+        targetWord = word;
+        recur(new char[5], 0);
+        return cnt;
     }
     
-    public static StringBuilder upper(StringBuilder sb){
+    void recur(char[] arr, int idx){
+        if(new String(arr, 0, idx).equals(targetWord)){
+            find = true;
+            return;
+        }
         
-        for(;sb.length()>0;){
-            int lastIndex = sb.length() - 1;
-            sb.deleteCharAt(lastIndex--);
+        if(idx > 4)
+            return;
+        
+        for(int i=0;i<5;i++){
+            cnt++;
+            arr[idx] = aeiou[i];
             
-            char front = sb.charAt(lastIndex);
-            if(front!='U'){
-                sb.setCharAt(lastIndex, map.get(front));
-                return sb;
-            }
-             
-        }        
-        return null;
+            recur(arr, idx+1);
+
+            if(find)
+                return;
+        }
     }
 }

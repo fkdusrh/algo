@@ -2,12 +2,11 @@ import java.util.*;
 class Solution {
     public int solution(String t, String p) {
         int answer = 0;
-        int size = p.length();
+        Long pLong = Long.parseLong(p);
         
-        for(int i=0;i<=t.length()-size;i++){
-            if(t.substring(i,i+size).compareTo(p) <= 0){
-                answer++;
-            }
+        for(int i=0;i<=t.length() - p.length();i++){
+             if(Long.parseLong(t.substring(i, i+p.length())) <= pLong)
+                answer ++;
         }
         
         return answer;

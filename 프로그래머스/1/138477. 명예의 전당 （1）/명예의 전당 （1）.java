@@ -2,24 +2,20 @@ import java.util.*;
 class Solution {
     public int[] solution(int k, int[] score) {
         int[] answer = new int[score.length];
+        int size = 0;
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         
-        for(int i=0;i<score.length;i++){
-            int s = score[i];
-            
-            if(pq.size() < k){
-                pq.offer(s);
-            }else {
-                int lowest = pq.peek();
-                
-                if (lowest < s) {
-                    pq.poll();
-                    pq.offer(s);
-                }  
+        for(int sc : score){
+            if(pq.size() >= k && pq.peek() < sc){
+                pq.poll();   
+                pq.add(sc);
+            }else if(pq.size() < k){
+                pq.add(sc);
             }
             
-            answer[i] = pq.peek();
+            answer[size++] = pq.peek();
         }
-        return answer;
+        
+        return Arrays.copyOf(answer, size);
     }
 }

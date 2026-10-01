@@ -3,15 +3,9 @@ class Solution {
     public int solution(int k, int m, int[] score) {
         int answer = 0;
         Arrays.sort(score);
-        int curCnt = 0;
         
-        for(int i=score.length-1; i>=0;i--){
-            if(curCnt + 1 == m){
-                answer += score[i] * m;
-                curCnt = 0;
-            } else{
-                curCnt++;
-            }
+        for(int i=score.length - m ;i >= 0;i-=m){
+            answer += score[i] * m;
         }
         
         return answer;
